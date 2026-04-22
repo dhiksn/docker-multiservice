@@ -73,11 +73,24 @@ if ! id "${FTP_USER}" &>/dev/null; then
     log_warn "FTP user '${FTP_USER}' not found, creating..."
     useradd -m -s /bin/bash "${FTP_USER}"
     echo "${FTP_USER}:${FTP_PASS}" | chpasswd
-    mkdir -p /home/${FTP_USER}/ftp
-    chown root:root /home/${FTP_USER}
-    chmod 755 /home/${FTP_USER}
-    chown ${FTP_USER}:${FTP_USER} /home/${FTP_USER}/ftp
 fi
+
+# Fix permission chroot — /home/admin harus root:root 755, TIDAK writable user
+chown root:root /home/${FTP_USER}
+chmod 755 /home/${FTP_USER}
+
+# Pastikan subdirektori ftp/ ada dan dimiliki user
+mkdir -p /home/${FTP_USER}/ftp
+chown ${FTP_USER}:${FTP_USER} /home/${FTP_USER}/ftp
+chmod 755 /home/${FTP_USER}/ftp
+
+# Fix PAM vsftpd — gunakan pam_unix langsung (bypass issue PAM di container)
+cat > /etc/pam.d/vsftpd << 'PAMEOF'
+auth    required pam_unix.so
+account required pam_unix.so
+PAMEOF
+
+log_info "FTP chroot permissions set correctly"
 
 /usr/sbin/vsftpd /etc/vsftpd.conf &
 FTP_PID=$!

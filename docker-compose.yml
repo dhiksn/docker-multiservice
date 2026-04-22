@@ -28,7 +28,7 @@ services:
 
     environment:
       - FTP_USER=admin
-      - FTP_PASS=admin123
+      - FTP_PASS=123
       - TZ=Asia/Jakarta
 
     # Batasi resource

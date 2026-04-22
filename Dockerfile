@@ -46,10 +46,15 @@ RUN mkdir -p \
 # ─── Setup FTP User ──────────────────────────────────────────────────────────
 RUN useradd -m -s /bin/bash ${FTP_USER} \
     && echo "${FTP_USER}:${FTP_PASS}" | chpasswd \
+    # /home/admin harus dimiliki root dan TIDAK writable oleh user (syarat chroot vsftpd)
     && chown root:root /home/${FTP_USER} \
     && chmod 755 /home/${FTP_USER} \
+    # Subdirektori ftp/ dimiliki user — tempat upload/download
+    && mkdir -p /home/${FTP_USER}/ftp \
     && chown ${FTP_USER}:${FTP_USER} /home/${FTP_USER}/ftp \
-    && chmod 755 /home/${FTP_USER}/ftp
+    && chmod 755 /home/${FTP_USER}/ftp \
+    # Pastikan PAM bisa baca shadow password
+    && usermod -aG shadow ${FTP_USER} || true
 
 # ─── Copy konfigurasi ────────────────────────────────────────────────────────
 COPY config/vsftpd.conf /etc/vsftpd.conf
