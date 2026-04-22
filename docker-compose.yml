@@ -1,0 +1,78 @@
+version: "3.9"
+
+services:
+  multiservice:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: techcorp-server
+    hostname: techcorp-server
+    restart: unless-stopped
+
+    ports:
+      - "80:80"       # Apache HTTP
+      - "21:21"       # FTP Control
+      - "20:20"       # FTP Data (active mode)
+      - "21100-21110:21100-21110"  # FTP Passive ports
+      - "22:22"       # SSH
+
+    volumes:
+      # Web root — persistent
+      - webroot:/var/www/html
+      # FTP home directory — persistent
+      - ftpdata:/home/admin/ftp
+      # Log directory — persistent
+      - logs:/var/log/services
+      # Apache logs
+      - apache_logs:/var/log/apache2
+
+    environment:
+      - FTP_USER=admin
+      - FTP_PASS=admin123
+      - TZ=Asia/Jakarta
+
+    # Batasi resource
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 512M
+        reservations:
+          cpus: "0.25"
+          memory: 128M
+
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+
+    # Capabilities yang dibutuhkan vsftpd
+    cap_add:
+      - NET_BIND_SERVICE
+
+    # Security options
+    security_opt:
+      - no-new-privileges:false   # vsftpd butuh privilege untuk chroot
+
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+volumes:
+  webroot:
+    driver: local
+  ftpdata:
+    driver: local
+  logs:
+    driver: local
+  apache_logs:
+    driver: local
+
+networks:
+  default:
+    name: techcorp-network
+    driver: bridge

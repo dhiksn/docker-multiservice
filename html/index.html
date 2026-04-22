@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechCorp Indonesia — IT Solutions</title>
+    <style>
+        /* ── Reset & Base ── */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --primary:   #0f172a;
+            --accent:    #3b82f6;
+            --accent2:   #06b6d4;
+            --light:     #f8fafc;
+            --muted:     #64748b;
+            --card-bg:   #1e293b;
+            --border:    #334155;
+            --gradient:  linear-gradient(135deg, #0f172a 0%, #1e3a5f 100%);
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--primary);
+            color: var(--light);
+            line-height: 1.6;
+        }
+
+        /* ── Navbar ── */
+        nav {
+            position: fixed; top: 0; width: 100%; z-index: 100;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 2rem;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+
+        .nav-logo {
+            font-size: 1.4rem; font-weight: 700;
+            background: linear-gradient(90deg, var(--accent), var(--accent2));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links { display: flex; gap: 2rem; list-style: none; }
+        .nav-links a {
+            color: #94a3b8; text-decoration: none; font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+        .nav-links a:hover { color: var(--accent); }
+
+        /* ── Hero ── */
+        .hero {
+            min-height: 100vh;
+            background: var(--gradient);
+            display: flex; align-items: center; justify-content: center;
+            text-align: center; padding: 6rem 2rem 4rem;
+            position: relative; overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute; inset: 0;
+            background: radial-gradient(ellipse at 50% 50%, rgba(59,130,246,0.15) 0%, transparent 70%);
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: rgba(59,130,246,0.15);
+            border: 1px solid rgba(59,130,246,0.3);
+            color: var(--accent);
+            padding: 0.4rem 1rem; border-radius: 999px;
+            font-size: 0.8rem; font-weight: 600; letter-spacing: 0.05em;
+            text-transform: uppercase; margin-bottom: 1.5rem;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 800; line-height: 1.1;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero h1 span {
+            background: linear-gradient(90deg, var(--accent), var(--accent2));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 1.15rem; color: #94a3b8;
+            max-width: 600px; margin: 0 auto 2.5rem;
+        }
+
+        .btn-group { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+
+        .btn {
+            padding: 0.8rem 2rem; border-radius: 8px;
+            font-size: 0.95rem; font-weight: 600;
+            text-decoration: none; transition: all 0.2s; cursor: pointer;
+            border: none;
+        }
+
+        .btn-primary {
+            background: var(--accent); color: white;
+        }
+        .btn-primary:hover { background: #2563eb; transform: translateY(-2px); }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--light);
+        }
+        .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+
+        /* ── Section ── */
+        section { padding: 5rem 2rem; }
+        .container { max-width: 1100px; margin: 0 auto; }
+
+        .section-label {
+            color: var(--accent); font-size: 0.8rem;
+            font-weight: 700; letter-spacing: 0.1em;
+            text-transform: uppercase; margin-bottom: 0.75rem;
+        }
+
+        .section-title {
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            font-weight: 700; margin-bottom: 1rem;
+        }
+
+        .section-desc { color: #94a3b8; max-width: 600px; margin-bottom: 3rem; }
+
+        /* ── About ── */
+        #about { background: #0f172a; }
+
+        .about-grid {
+            display: grid; grid-template-columns: 1fr 1fr;
+            gap: 4rem; align-items: center;
+        }
+
+        .about-stats {
+            display: grid; grid-template-columns: 1fr 1fr;
+            gap: 1.5rem; margin-top: 2rem;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px; padding: 1.5rem;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem; font-weight: 800;
+            background: linear-gradient(90deg, var(--accent), var(--accent2));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label { color: #94a3b8; font-size: 0.85rem; margin-top: 0.25rem; }
+
+        .about-image {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px; padding: 3rem;
+            text-align: center;
+        }
+
+        .about-icon { font-size: 5rem; margin-bottom: 1rem; }
+
+        /* ── Services ── */
+        #services { background: #0a1628; }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .service-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px; padding: 2rem;
+            transition: all 0.3s; position: relative; overflow: hidden;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute; top: 0; left: 0; right: 0; height: 3px;
+            background: linear-gradient(90deg, var(--accent), var(--accent2));
+            transform: scaleX(0); transition: transform 0.3s;
+        }
+
+        .service-card:hover { border-color: var(--accent); transform: translateY(-4px); }
+        .service-card:hover::before { transform: scaleX(1); }
+
+        .service-icon {
+            width: 56px; height: 56px;
+            background: rgba(59,130,246,0.1);
+            border: 1px solid rgba(59,130,246,0.2);
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.5rem; margin-bottom: 1.25rem;
+        }
+
+        .service-card h3 { font-size: 1.15rem; font-weight: 700; margin-bottom: 0.75rem; }
+        .service-card p { color: #94a3b8; font-size: 0.9rem; line-height: 1.7; }
+
+        .service-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.25rem; }
+
+        .tag {
+            background: rgba(59,130,246,0.1);
+            border: 1px solid rgba(59,130,246,0.2);
+            color: var(--accent); font-size: 0.75rem;
+            padding: 0.25rem 0.75rem; border-radius: 999px;
+        }
+
+        /* ── Team ── */
+        #team { background: #0f172a; }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .team-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px; padding: 2rem;
+            text-align: center; transition: all 0.3s;
+        }
+
+        .team-card:hover { border-color: var(--accent); transform: translateY(-4px); }
+
+        .team-avatar {
+            width: 80px; height: 80px;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            border-radius: 50%; margin: 0 auto 1rem;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 2rem;
+        }
+
+        .team-card h3 { font-weight: 700; margin-bottom: 0.25rem; }
+        .team-card .role { color: var(--accent); font-size: 0.85rem; margin-bottom: 0.75rem; }
+        .team-card p { color: #94a3b8; font-size: 0.85rem; }
+
+        /* ── Contact ── */
+        #contact { background: #0a1628; }
+
+        .contact-grid {
+            display: grid; grid-template-columns: 1fr 1fr;
+            gap: 3rem; align-items: start;
+        }
+
+        .contact-info { display: flex; flex-direction: column; gap: 1.5rem; }
+
+        .contact-item {
+            display: flex; align-items: flex-start; gap: 1rem;
+        }
+
+        .contact-icon {
+            width: 44px; height: 44px; flex-shrink: 0;
+            background: rgba(59,130,246,0.1);
+            border: 1px solid rgba(59,130,246,0.2);
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.1rem;
+        }
+
+        .contact-item h4 { font-weight: 600; margin-bottom: 0.25rem; }
+        .contact-item p { color: #94a3b8; font-size: 0.9rem; }
+
+        .contact-form {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px; padding: 2rem;
+        }
+
+        .form-group { margin-bottom: 1.25rem; }
+
+        .form-group label {
+            display: block; font-size: 0.85rem;
+            font-weight: 600; margin-bottom: 0.5rem; color: #94a3b8;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            background: var(--primary);
+            border: 1px solid var(--border);
+            border-radius: 8px; padding: 0.75rem 1rem;
+            color: var(--light); font-size: 0.9rem;
+            transition: border-color 0.2s; outline: none;
+            font-family: inherit;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus { border-color: var(--accent); }
+
+        .form-group textarea { resize: vertical; min-height: 120px; }
+
+        /* ── Footer ── */
+        footer {
+            background: #060d1a;
+            border-top: 1px solid var(--border);
+            padding: 2rem;
+            text-align: center; color: #475569; font-size: 0.85rem;
+        }
+
+        footer span { color: var(--accent); }
+
+        /* ── Responsive ── */
+        @media (max-width: 768px) {
+            .about-grid, .contact-grid { grid-template-columns: 1fr; }
+            .nav-links { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ── Navbar ── -->
+<nav>
+    <div class="nav-logo">⚡ TechCorp</div>
+    <ul class="nav-links">
+        <li><a href="#about">Tentang</a></li>
+        <li><a href="#services">Layanan</a></li>
+        <li><a href="#team">Tim</a></li>
+        <li><a href="#contact">Kontak</a></li>
+    </ul>
+    <a href="#contact" class="btn btn-primary" style="padding:0.5rem 1.25rem;font-size:0.85rem;">Hubungi Kami</a>
+</nav>
+
+<!-- ── Hero ── -->
+<section class="hero">
+    <div style="position:relative;z-index:1;">
+        <div class="hero-badge">🚀 IT Solutions Provider</div>
+        <h1>Solusi Teknologi<br><span>Terpercaya untuk Bisnis</span><br>Anda</h1>
+        <p>TechCorp Indonesia hadir sebagai mitra teknologi terpercaya, menghadirkan solusi inovatif di bidang Web Development, Jaringan, dan Keamanan Siber.</p>
+        <div class="btn-group">
+            <a href="#services" class="btn btn-primary">Lihat Layanan</a>
+            <a href="#contact" class="btn btn-outline">Konsultasi Gratis</a>
+        </div>
+    </div>
+</section>
+
+<!-- ── About ── -->
+<section id="about">
+    <div class="container">
+        <div class="about-grid">
+            <div>
+                <p class="section-label">Tentang Kami</p>
+                <h2 class="section-title">Kami Membangun Masa Depan Digital</h2>
+                <p style="color:#94a3b8;line-height:1.8;margin-bottom:1rem;">
+                    TechCorp Indonesia adalah perusahaan teknologi informasi yang berdiri sejak 2015, 
+                    berfokus pada pengembangan solusi digital yang scalable, aman, dan efisien untuk 
+                    berbagai skala bisnis — dari startup hingga enterprise.
+                </p>
+                <p style="color:#94a3b8;line-height:1.8;">
+                    Dengan tim yang berpengalaman dan bersertifikasi internasional, kami berkomitmen 
+                    memberikan layanan terbaik dengan standar industri tertinggi.
+                </p>
+                <div class="about-stats">
+                    <div class="stat-card">
+                        <div class="stat-number">200+</div>
+                        <div class="stat-label">Proyek Selesai</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">50+</div>
+                        <div class="stat-label">Klien Aktif</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">9+</div>
+                        <div class="stat-label">Tahun Pengalaman</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">24/7</div>
+                        <div class="stat-label">Support</div>
+                    </div>
+                </div>
+            </div>
+            <div class="about-image">
+                <div class="about-icon">🏢</div>
+                <h3 style="font-size:1.3rem;font-weight:700;margin-bottom:0.5rem;">TechCorp Indonesia</h3>
+                <p style="color:#94a3b8;font-size:0.9rem;">Jakarta, Indonesia</p>
+                <div style="margin-top:1.5rem;display:flex;flex-direction:column;gap:0.75rem;">
+                    <div style="background:rgba(59,130,246,0.1);border:1px solid rgba(59,130,246,0.2);border-radius:8px;padding:0.75rem;font-size:0.85rem;">
+                        🏆 ISO 27001 Certified
+                    </div>
+                    <div style="background:rgba(6,182,212,0.1);border:1px solid rgba(6,182,212,0.2);border-radius:8px;padding:0.75rem;font-size:0.85rem;">
+                        ✅ Microsoft Gold Partner
+                    </div>
+                    <div style="background:rgba(59,130,246,0.1);border:1px solid rgba(59,130,246,0.2);border-radius:8px;padding:0.75rem;font-size:0.85rem;">
+                        🔒 Kominfo Registered
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ── Services ── -->
+<section id="services">
+    <div class="container">
+        <p class="section-label">Layanan Kami</p>
+        <h2 class="section-title">Apa yang Kami Tawarkan</h2>
+        <p class="section-desc">Solusi teknologi komprehensif yang dirancang untuk mendorong pertumbuhan bisnis Anda di era digital.</p>
+
+        <div class="services-grid">
+            <!-- Web Development -->
+            <div class="service-card">
+                <div class="service-icon">🌐</div>
+                <h3>Web Development</h3>
+                <p>Pengembangan aplikasi web modern yang responsif, cepat, dan scalable menggunakan teknologi terkini. Dari landing page hingga sistem enterprise.</p>
+                <div class="service-tags">
+                    <span class="tag">React / Vue</span>
+                    <span class="tag">Node.js</span>
+                    <span class="tag">Laravel</span>
+                    <span class="tag">REST API</span>
+                    <span class="tag">PWA</span>
+                </div>
+            </div>
+
+            <!-- Network -->
+            <div class="service-card">
+                <div class="service-icon">🔗</div>
+                <h3>Network & Infrastructure</h3>
+                <p>Perancangan, implementasi, dan manajemen infrastruktur jaringan yang handal. Termasuk cloud migration, VPN, dan monitoring 24/7.</p>
+                <div class="service-tags">
+                    <span class="tag">Cisco / Mikrotik</span>
+                    <span class="tag">AWS / GCP</span>
+                    <span class="tag">VPN</span>
+                    <span class="tag">SD-WAN</span>
+                    <span class="tag">NOC</span>
+                </div>
+            </div>
+
+            <!-- Cybersecurity -->
+            <div class="service-card">
+                <div class="service-icon">🛡️</div>
+                <h3>Cybersecurity</h3>
+                <p>Perlindungan menyeluruh terhadap ancaman siber. Penetration testing, vulnerability assessment, dan implementasi sistem keamanan berlapis.</p>
+                <div class="service-tags">
+                    <span class="tag">Pentest</span>
+                    <span class="tag">VAPT</span>
+                    <span class="tag">SOC</span>
+                    <span class="tag">SIEM</span>
+                    <span class="tag">ISO 27001</span>
+                </div>
+            </div>
+
+            <!-- Cloud -->
+            <div class="service-card">
+                <div class="service-icon">☁️</div>
+                <h3>Cloud Solutions</h3>
+                <p>Migrasi dan manajemen infrastruktur cloud yang efisien. Optimasi biaya, auto-scaling, dan disaster recovery untuk bisnis Anda.</p>
+                <div class="service-tags">
+                    <span class="tag">AWS</span>
+                    <span class="tag">Azure</span>
+                    <span class="tag">Docker</span>
+                    <span class="tag">Kubernetes</span>
+                    <span class="tag">CI/CD</span>
+                </div>
+            </div>
+
+            <!-- IT Consulting -->
+            <div class="service-card">
+                <div class="service-icon">💡</div>
+                <h3>IT Consulting</h3>
+                <p>Konsultasi strategis untuk transformasi digital bisnis Anda. Analisis kebutuhan, roadmap teknologi, dan pendampingan implementasi.</p>
+                <div class="service-tags">
+                    <span class="tag">Digital Transform</span>
+                    <span class="tag">IT Audit</span>
+                    <span class="tag">ITSM</span>
+                    <span class="tag">ITIL</span>
+                </div>
+            </div>
+
+            <!-- Managed Services -->
+            <div class="service-card">
+                <div class="service-icon">⚙️</div>
+                <h3>Managed Services</h3>
+                <p>Pengelolaan infrastruktur IT secara menyeluruh dengan SLA terjamin. Monitoring proaktif, maintenance rutin, dan support 24/7.</p>
+                <div class="service-tags">
+                    <span class="tag">24/7 Support</span>
+                    <span class="tag">SLA 99.9%</span>
+                    <span class="tag">Monitoring</span>
+                    <span class="tag">Backup</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ── Team ── -->
+<section id="team">
+    <div class="container">
+        <p class="section-label">Tim Kami</p>
+        <h2 class="section-title">Ahli di Balik Solusi</h2>
+        <p class="section-desc">Tim profesional bersertifikasi dengan pengalaman bertahun-tahun di industri teknologi.</p>
+
+        <div class="team-grid">
+            <div class="team-card">
+                <div class="team-avatar">👨‍💼</div>
+                <h3>Budi Santoso</h3>
+                <div class="role">CEO & Founder</div>
+                <p>15+ tahun pengalaman di industri IT. Certified AWS Solutions Architect.</p>
+            </div>
+            <div class="team-card">
+                <div class="team-avatar">👩‍💻</div>
+                <h3>Sari Dewi</h3>
+                <div class="role">Lead Developer</div>
+                <p>Full-stack developer spesialis React & Node.js. 8+ tahun pengalaman.</p>
+            </div>
+            <div class="team-card">
+                <div class="team-avatar">👨‍🔧</div>
+                <h3>Andi Pratama</h3>
+                <div class="role">Network Engineer</div>
+                <p>CCNP & CCIE certified. Spesialis infrastruktur enterprise dan cloud.</p>
+            </div>
+            <div class="team-card">
+                <div class="team-avatar">👩‍🔒</div>
+                <h3>Rina Kusuma</h3>
+                <div class="role">Security Analyst</div>
+                <p>CEH & OSCP certified. Spesialis penetration testing dan incident response.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ── Contact ── -->
+<section id="contact">
+    <div class="container">
+        <p class="section-label">Hubungi Kami</p>
+        <h2 class="section-title">Siap Memulai Proyek?</h2>
+        <p class="section-desc">Konsultasikan kebutuhan teknologi Anda dengan tim kami. Gratis, tanpa komitmen.</p>
+
+        <div class="contact-grid">
+            <div class="contact-info">
+                <div class="contact-item">
+                    <div class="contact-icon">📍</div>
+                    <div>
+                        <h4>Alamat</h4>
+                        <p>Jl. Sudirman No. 123, Lantai 15<br>Jakarta Pusat, DKI Jakarta 10220</p>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon">📞</div>
+                    <div>
+                        <h4>Telepon</h4>
+                        <p>+62 21 1234 5678<br>+62 812 3456 7890 (WhatsApp)</p>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon">✉️</div>
+                    <div>
+                        <h4>Email</h4>
+                        <p>info@techcorp.id<br>support@techcorp.id</p>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon">🕐</div>
+                    <div>
+                        <h4>Jam Operasional</h4>
+                        <p>Senin – Jumat: 08.00 – 17.00 WIB<br>Support: 24/7</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="contact-form">
+                <h3 style="font-weight:700;margin-bottom:1.5rem;">Kirim Pesan</h3>
+                <div class="form-group">
+                    <label>Nama Lengkap</label>
+                    <input type="text" placeholder="John Doe">
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" placeholder="john@company.com">
+                </div>
+                <div class="form-group">
+                    <label>Layanan yang Diminati</label>
+                    <input type="text" placeholder="Web Development, Cybersecurity, dll.">
+                </div>
+                <div class="form-group">
+                    <label>Pesan</label>
+                    <textarea placeholder="Ceritakan kebutuhan proyek Anda..."></textarea>
+                </div>
+                <button class="btn btn-primary" style="width:100%;">Kirim Pesan →</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ── Footer ── -->
+<footer>
+    <p>© 2024 <span>TechCorp Indonesia</span>. All rights reserved. | Crafted with ❤️ in Jakarta</p>
+    <p style="margin-top:0.5rem;font-size:0.8rem;">Web Server: Apache2 | Container: Docker | Stack: Debian Linux</p>
+</footer>
+
+</body>
+</html>

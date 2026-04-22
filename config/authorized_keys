@@ -1,0 +1,11 @@
+# ─── SSH Public Key ───────────────────────────────────────────────────────────
+# GANTI baris di bawah ini dengan public key Anda sebelum build!
+#
+# Cara generate:
+#   ssh-keygen -t ed25519 -C "admin@techcorp.id"
+#   cat ~/.ssh/id_ed25519.pub
+#
+# Lalu paste hasilnya di sini (hapus baris contoh di bawah):
+#
+# CONTOH FORMAT (tidak valid, hanya ilustrasi):
+# ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPlaceholderKeyReplaceWithYourActualPublicKey admin@techcorp.id

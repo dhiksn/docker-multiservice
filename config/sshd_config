@@ -1,0 +1,57 @@
+# ─── OpenSSH Server Configuration ────────────────────────────────────────────
+# TechCorp Multi-Service Container
+
+# ── Port & Protocol ────────────────────────────────────────────────────────────
+Port 22
+Protocol 2
+AddressFamily any
+ListenAddress 0.0.0.0
+
+# ── Host Keys ──────────────────────────────────────────────────────────────────
+HostKey /etc/ssh/ssh_host_rsa_key
+HostKey /etc/ssh/ssh_host_ecdsa_key
+HostKey /etc/ssh/ssh_host_ed25519_key
+
+# ── Authentication ─────────────────────────────────────────────────────────────
+# Nonaktifkan password login — hanya key-based
+PasswordAuthentication no
+ChallengeResponseAuthentication no
+UsePAM no
+
+# Aktifkan public key authentication
+PubkeyAuthentication yes
+AuthorizedKeysFile /etc/ssh/authorized_keys/%u_key.pub .ssh/authorized_keys
+
+# Nonaktifkan root login
+PermitRootLogin no
+
+# Nonaktifkan login kosong
+PermitEmptyPasswords no
+
+# ── Session ────────────────────────────────────────────────────────────────────
+LoginGraceTime 30
+MaxAuthTries 3
+MaxSessions 5
+ClientAliveInterval 300
+ClientAliveCountMax 2
+
+# ── Features ───────────────────────────────────────────────────────────────────
+X11Forwarding no
+AllowTcpForwarding yes
+GatewayPorts no
+PermitTunnel no
+
+# ── Logging ────────────────────────────────────────────────────────────────────
+SyslogFacility AUTH
+LogLevel INFO
+
+# ── SFTP Subsystem ─────────────────────────────────────────────────────────────
+Subsystem sftp /usr/lib/openssh/sftp-server
+
+# ── Allowed Users ──────────────────────────────────────────────────────────────
+AllowUsers admin
+
+# ── Ciphers & MACs (hardened) ──────────────────────────────────────────────────
+Ciphers aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr
+MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-sha2-512,hmac-sha2-256
+KexAlgorithms curve25519-sha256@libssh.org,diffie-hellman-group14-sha256
