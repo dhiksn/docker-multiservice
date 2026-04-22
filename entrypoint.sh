@@ -67,6 +67,7 @@ log_section "Starting FTP Server (vsftpd)"
 
 # Pastikan direktori vsftpd ada
 mkdir -p /var/run/vsftpd/empty
+chmod 755 /var/run/vsftpd/empty
 
 # Pastikan user FTP ada
 if ! id "${FTP_USER}" &>/dev/null; then
@@ -96,7 +97,7 @@ log_info "FTP chroot permissions set correctly"
 FTP_PID=$!
 
 sleep 1
-if kill -0 $FTP_PID 2>/dev/null; then
+if pgrep vsftpd > /dev/null; then
     log_info "FTP Server started successfully (PID: $FTP_PID, Port: 21)"
 else
     log_error "FTP Server failed to start!"
@@ -162,7 +163,7 @@ while true; do
     fi
 
     # Monitor vsftpd
-    if ! kill -0 $FTP_PID 2>/dev/null; then
+    if ! pgrep vsftpd > /dev/null; then
         log_warn "vsftpd died, restarting..."
         /usr/sbin/vsftpd /etc/vsftpd.conf &
         FTP_PID=$!
