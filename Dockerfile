@@ -62,6 +62,10 @@ COPY config/sshd_config /etc/ssh/sshd_config
 COPY config/authorized_keys /etc/ssh/authorized_keys/admin_key.pub
 COPY html/index.html /var/www/html/index.html
 
+# Fix CRLF issues (convert Windows line endings ke Unix)
+RUN sed -i 's/\r$//' /etc/vsftpd.conf && \
+    sed -i 's/\r$//' /etc/ssh/sshd_config
+
 # ─── Setup SSH authorized_keys ───────────────────────────────────────────────
 # Filter baris komentar, hanya ambil baris key yang valid
 RUN mkdir -p /root/.ssh /home/${FTP_USER}/.ssh \
